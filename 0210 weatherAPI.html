@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+  <style>
+    * {
+      font-family: 'Microsoft JhengHei;';
+      font-weight: 900;
+    }
+
+    body {
+
+      background-image: url(./B19A00_P_01_02.jpg);
+      background-size: 100%;
+    }
+
+    td {
+      height: 45px;
+      text-align: center;
+    }
+
+    tr {
+      height: 45px;
+      text-align: center;
+    }
+
+    th {
+
+      text-align: center;
+    }
+
+    
+
+    .title2 {
+
+      background-color: skyblue;
+    }
+
+    .title3 {
+
+    
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="title1" style="margin-top: 50px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="text-center" style="color: rgb(40, 69, 126);font-weight: bolder;border-bottom: 5px solid rgb(40, 69, 126);">淡水河水質檢測</h1>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="title3" style="width: 1500px;margin: auto;font-size: larger;">
+    <div class="container mt-5 "></div>
+    <table id="table_id" class="table table-striped title2">
+      <thead>
+        <tr style="background-color: rgb(18, 69, 120);color: white;">
+          <th>id</th>
+          <th>採樣日期</th>
+          <th>測項名稱</th>
+          <th>測項英文名稱</th>
+          <th>測項英文簡稱</th>
+          <th>監測值</th>
+          <th>測項單位</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 這邊用$('tbody').append放入Josn資料 -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 先載入 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+    integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+    crossorigin="anonymous"></script>
+  <!-- 先載入 END-->
+
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+
+  <script>
+
+
+
+    $(document).ready(function () {
+
+      $.ajax({
+        type: "get",
+        //這邊type可以改成method 意思一樣
+        url: "./Water_Quality_Analysis.js",
+        dataType: 'json',
+        success: function (result) {
+          //console.log(result)//整個資料
+          //console.log(result[2].itemname)//這樣可以取得itemname那項目的這邊是抓到氯
+          //console.log(result.length)//抓到陣列的長度
+
+          for (let i = 0; i < result.length; i++) {
+
+            $('tbody').append(
+              `
+        <tr>
+        <td>${i + 1}</td>
+        <td>${result[i].sampledate}</td>
+        <td>
+           ${result[i].itemname}
+        <td>
+          ${result[i].itemengname}
+        </td>
+        <td>
+          ${result[i].itemengabbreviation}
+        </td>
+        <td>
+          ${result[i].itemvalue}
+      </td>
+      <td>
+        ${result[i].itemunit}
+      </td>
+        </tr>
+        `
+
+            );
+          }
+          $('#table_id').DataTable();
+        }
+      })
+    });
+
+
+
+
+  </script>
+
+</body>
+
+</html>
